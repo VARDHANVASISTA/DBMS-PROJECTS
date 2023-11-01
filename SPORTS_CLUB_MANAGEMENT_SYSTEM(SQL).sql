@@ -488,6 +488,47 @@ insert into Slots value('1022BB0003', 'D0004', '1121CBB001', '08:00 AM', '08:00 
 insert into Slots value('0722VB0003', 'D0003', '0228CVB001', '08:00 AM', '08:00 PM', '08:00 AM', '08:00 PM', '08:00 AM', '08:00 PM','08:00 AM'),('1021VB0004', 'D0003', '1021CVB002', '08:00 AM', '08:00 PM', '08:00 AM', '08:00 PM', '08:00 AM', '08:00 PM','08:00 AM'),('1019VB0005', 'D0003', '0228CVB001', '08:00 AM', '08:00 PM', '08:00 AM', '08:00 PM', '08:00 AM', '08:00 PM','08:00 AM'),('0814VB0006', 'D0003', '1021CVB002', '08:00 AM', '08:00 PM', '08:00 AM', '08:00 PM', '08:00 AM', '08:00 PM','08:00 AM'),('0904VB0007', 'D0003', '0228CVB001', '08:00 AM', '08:00 PM', '08:00 AM', '08:00 PM', '08:00 AM', '08:00 PM','08:00 AM');
 insert into Slots value('0723CK0003', 'D0002', '0928CCK001', '08:00 AM', '08:00 PM', '08:00 AM', '08:00 PM', '08:00 AM', '08:00 PM','08:00 AM'),('0623CK0004', 'D0002', '1018CCK002', '08:00 AM', '08:00 PM', '08:00 AM', '08:00 PM', '08:00 AM', '08:00 PM','08:00 AM'),('0523CK0005', 'D0002', '0928CCK001', '08:00 AM', '08:00 PM', '08:00 AM', '08:00 PM', '08:00 AM', '08:00 PM','08:00 AM'),('0423CK0006', 'D0002', '1018CCK002', '08:00 AM', '08:00 PM', '08:00 AM', '08:00 PM', '08:00 AM', '08:00 PM','08:00 AM'),('0223CK0007', 'D0002', '0928CCK001', '08:00 AM', '08:00 PM', '08:00 AM', '08:00 PM', '08:00 AM', '08:00 PM','08:00 AM');
 
+MORE QUERIES:
+Like and between
+ SELECT Coach_Id, Coach_Name FROM Coach WHERE Coach_Name LIKE '%Singh';
+ SELECT Department_Id, Department_Name FROM Department WHERE Department_Name LIKE '%Ball%';
+ SELECT Department_Id, Department_Name FROM Department WHERE Department_Id between "D0003" and "D0007";
+ 
+Group by
+ select Candidate_Id, Candidate_name, Department_name from Candidate group by Candidate_Id;
+ select Department_Id, Department_name, Start_date from Department group by Department_Id;
+ 
+Having
+ select * from Candidate having Department_Id = "D0002";
+ select * from Slots having Department_Id = "D0005";
+ 
+Set
+  Union
+    select Candidate_name, Department_name from Candidate where Department_Id="D0002" union select Candidate_name, Department_name from Candidate where Department_Id="D0005";
+    select Coach_name, Coach_place, Gender from Coach where Department_Id="D0003" union select Coach_name, Coach_place, Gender from Coach where Department_Id="D0006";
+    
+  Intersect
+    select Candidate_Id from Candidate intersect select Candidate_Id from Slots;
+    select Coach_Id from Coach intersect select Coach_Id from Slots; from Slots;
+  
+  Union all
+    select Coach_name from Coach union all select Phone from Coach_ph_em;
+    select Admin_name from Admin union all select City from Admin;
+
+Nested
+  SELECT Email FROM Candidate_ph_em WHERE Candidate_Id IN (SELECT Candidate_Id FROM Candidate WHERE Department_Id = 'D0006');
+  SELECT Candidate_Id, Candidate_Name FROM Candidate WHERE Candidate_Id IN (SELECT Candidate_Id FROM Enroll WHERE Subscription_type = 'Monthly');
+  SELECT Coach_Id, Coach_Name, (SELECT COUNT(*) FROM Slots WHERE Slots.Coach_Id = Coach.Coach_Id) AS SlotCount FROM Coach;         
+  SELECT Coach_Name FROM Coach WHERE Department_Id = (SELECT Department_Id FROM Department WHERE Department_Name = 'Department of Cricket');
+  SELECT Candidate_Id, Subscription_type, Amount_paid FROM Enroll WHERE Amount_paid > (SELECT AVG(Amount_paid) FROM Enroll );
+  
+Simple
+ select * from Admin;
+ select * from Department;
+ insert into Admin values("0923Ad0006", "DBMS", "dbms@0000", "0001-01-01", "UNKNOWN", "COMPUTER");
+ delete from Admin where Admin_Name="DBMS";
+ update Coach set Coach_name="M S Dhoni" where Coach_Id="0928CCK001";
+ 
 
 
 
